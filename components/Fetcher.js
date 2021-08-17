@@ -112,7 +112,7 @@ const CopyButton = styled.button `
     @media (max-width: 851px) {
         margin-top: 10px;
         width: 100%;
-    
+    } 
 `
 
 const Fetcher = () => {
@@ -155,7 +155,7 @@ const onsubmit = (e) =>{
         <FetchSection> 
         <FetchMain>
         <FetchContainer>
-            <form action="#" onsubmit="return false">
+            <form action="#" onSubmit="return false">
                 <InputURL 
                     placeholder="Shorten a link here..."
                     required

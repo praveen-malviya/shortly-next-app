@@ -58,11 +58,9 @@ const IconF = styled.a `
      margin-left: 1.6vw;
     }
     @media (max-width: 851px){
-        margin-left: 0;
-        margin-top: 20px;
-        margin-right: 25px;
+        margin: 20px 25px 5px 0px;
     }
-`
+`;
 
 const Icon = styled.img `
     

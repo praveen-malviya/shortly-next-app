@@ -12,7 +12,7 @@ const Nav = styled.div`
 
     @media (max-width: 851px) {
     justify-content:space-between;
-    
+    }
 `;
 
 const Menu = styled.div`
@@ -37,6 +37,7 @@ const UserIn = styled.div`
     float: right;
     @media (max-width: 851px) {
     display: none;
+    }
 `;
 
 const UserInLink = styled.a `
@@ -53,10 +54,8 @@ const UserInLink = styled.a `
 
 const HamMenu = styled.div `
     display: none;
-    
-
     @media (max-width: 851px) {
-    display:block;
+        display:block;
     }
 `;
 
@@ -75,7 +74,8 @@ const HamBar = styled.div `
 const Header = () => {
     return ( 
          <Nav>
-            <Image src={logo} />
+            <Image src={logo} alt="Shortly Logo" />
+
 
             <Menu>
                 <MenuLink>Features</MenuLink>
