@@ -1,223 +1,201 @@
 import styled from "styled-components";
 import { useState } from "react";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from "react-copy-to-clipboard";
 // import { Button } from "./Button.style";
 
-const FetchSection = styled.div `
-    background: #f0f1f6;
+const FetchSection = styled.div`
+  background: #f0f1f6;
 `;
 
-const FetchMain = styled.div `
-background: linear-gradient(180deg, #FFF 50%, #f0f1f6 50%);
+const FetchMain = styled.div`
+  background: linear-gradient(180deg, #fff 50%, #f0f1f6 50%);
 `;
 
-const FetchContainer = styled.div `
-    background-image: url("../images/bg-shorten-desktop.svg");
-    background-repeat: no-repeat;
-    background-size:cover;
-    box-sizing: border-box;
-    padding: 45px 0px;
-    background-color: #3b3054;
-    max-width: 73%;
-    margin-left: 13vw;
-    margin-top: 60px;
-    border-radius: 10px;
-    text-align: center;
+const FetchContainer = styled.div`
+  background-image: url("../images/bg-shorten-desktop.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-sizing: border-box;
+  padding: 45px 0px;
+  background-color: #3b3054;
+  max-width: 73%;
+  margin-left: 13vw;
+  margin-top: 60px;
+  border-radius: 10px;
+  text-align: center;
 
-    @media (max-width: 851px) {
-        background-image: url("../images/bg-shorten-mobile.svg");
-     }
-
+  @media (max-width: 851px) {
+    background-image: url("../images/bg-shorten-mobile.svg");
+  }
 `;
 
-const InputURL = styled.input `
-     box-sizing: border-box;
-     width: 60%;
-     height: 70px;
-     font-family: inherit;
-     font-size: 1.2em;
-     padding: 18px;
-     border-radius: 10px;
-     margin-right: 22px;
-     
-     /* color: #f46262; */
+const InputURL = styled.input`
+  box-sizing: border-box;
+  width: 60%;
+  height: 70px;
+  font-family: inherit;
+  font-size: 1.2em;
+  padding: 18px;
+  border-radius: 10px;
+  margin-right: 22px;
 
-     @media (max-width: 851px) {
-        width: 80% ;
-        margin-right:0;
-        margin-bottom: 15px;
-     }
+  /* color: #f46262; */
+
+  @media (max-width: 851px) {
+    width: 80%;
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
 `;
-const SubmitB = styled.button `
-    color: white;
-    background-color: #2acfcf;
-    padding: 20px 40px;
-    border-radius: 10px;
-    font-size: 1.2em;
-    border:none;
-    font-family: inherit;
-    box-sizing: border-box;
+const SubmitB = styled.button`
+  color: white;
+  background-color: #2acfcf;
+  padding: 20px 40px;
+  border-radius: 10px;
+  font-size: 1.2em;
+  border: none;
+  font-family: inherit;
+  box-sizing: border-box;
 
-    cursor:pointer;
-    &:hover {
-        background-color: #9ce2e2;
-    }
+  cursor: pointer;
+  &:hover {
+    background-color: #9ce2e2;
+  }
 
-    @media (max-width: 851px) {
+  @media (max-width: 851px) {
     padding: 20px 0px;
-     width: 80%;
-    /* margin: 10px; */
-    }
-    
+    width: 80%;
+  }
 `;
 
-const ErrorText = styled.div `
-    color: #f46262;
-    margin-top: 20px;
-    font-size: 1em;
+const ErrorText = styled.div`
+  color: #f46262;
+  margin-top: 20px;
+  font-size: 1em;
+`;
 
-`
+const LinkContainer = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  max-width: 73%;
+  margin-left: 13vw;
+  background-color: #fff;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 5px;
+  align-items: baseline;
 
-const LinkContainer = styled.div `
-    display: flex;
-    box-sizing: border-box;
-    max-width: 73%;
-    margin-left: 13vw;
-    background-color: #fff;
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 5px;
-    align-items: baseline;
-
-    @media (max-width: 851px) {
+  @media (max-width: 851px) {
     flex-direction: column;
-    }  
+  }
 `;
-const OriginalLink = styled.span `
-    flex-grow:2;
-    font-size: 1.2rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+const OriginalLink = styled.span`
+  flex-grow: 2;
+  font-size: 1.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-    @media (max-width: 851px) {
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #bfbfbf;
-        /* display: inline-block; */
-        width: 100%;
-   }
-`;
-
-const ShortLink = styled.span `
-    margin-right: 20px;
-    color:#2acfcf;
+  @media (max-width: 851px) {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #bfbfbf;
+    width: 100%;
+  }
 `;
 
-const CopyButton = styled.button `
-    color: white;
-    background-color:${({copySuccess}) => (copySuccess ? "#3b3054" : "#2acfcf")};
-    padding: 5px 20px;
-    border-radius: 5px;
-    /* font-size: 1.2em; */
-    border:none;
-    font-family: inherit;
+const ShortLink = styled.span`
+  margin-right: 20px;
+  color: #2acfcf;
+`;
 
-    @media (max-width: 851px) {
-        margin-top: 10px;
-        width: 100%;
-    } 
-`
+const CopyButton = styled.button`
+  color: white;
+  background-color: ${({ copySuccess }) =>
+    copySuccess ? "#3b3054" : "#2acfcf"};
+  padding: 5px 20px;
+  border-radius: 5px;
+  border: none;
+  font-family: inherit;
+
+  @media (max-width: 851px) {
+    margin-top: 10px;
+    width: 100%;
+  }
+`;
 
 const Fetcher = () => {
+  const apiURL = "https://api.shrtco.de/v2/shorten?url=";
 
-     
-    const apiURL = "https://api.shrtco.de/v2/shorten?url=";
+  // const [shortLinks, setShortLinks] = useState({});
 
-// const [shortLinks, setShortLinks] = useState({});
+  const [webURL, setWebURL] = useState(null);
+  const [originalLink, setOriginalLink] = useState("");
+  const [shortLink, setShortLink] = useState("");
 
-const [webURL, setWebURL] = useState(null);
-const [originalLink, setOriginalLink] = useState('');
-const [shortLink, setShortLink] = useState('');
+  const [linkTrue, setLinkTrue] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
 
-const [linkTrue, setLinkTrue] = useState(false);
-const [copySuccess, setCopySuccess] = useState(false);
-const [errorMessage, setErrorMessage] = useState(false);
+  const onsubmit = (e) => {
+    e.preventDefault();
+    setErrorMessage(false);
 
+    if (webURL == null) {
+      setErrorMessage(true);
+    } else {
+      fetch(apiURL + webURL)
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json.result);
+          // setShortLinks(json.result);
+          // console.log(shortLinks);
 
-// function copyToClipboard(e) {
-//     setCopySuccess('Copied!');
-//   };
-
-const onsubmit = (e) =>{
-    e.preventDefault()
-    setErrorMessage(false)
-
-    if(webURL==null){
-        setErrorMessage(true)
+          setOriginalLink(json.result.original_link);
+          setShortLink(json.result.full_short_link);
+          setLinkTrue(true);
+          setCopySuccess(false);
+        });
     }
-    else{
+  };
 
-    fetch(apiURL+webURL)
-    .then(response => response.json())
-    .then(json => {
-        console.log(json.result)
-        // setShortLinks(json.result);
-        // console.log(shortLinks);
-
-        setOriginalLink(json.result.original_link);
-        setShortLink(json.result.full_short_link); 
-        setLinkTrue(true);
-        setCopySuccess(false)   
-        
-    });
-   }    
-}
-
-
-    return (
-        <FetchSection> 
-        <FetchMain>
+  return (
+    <FetchSection>
+      <FetchMain>
         <FetchContainer>
-            <form action="#">
-                <InputURL 
-                    placeholder="Shorten a link here..."
-                    required
-                    onChange= {(e) => setWebURL(e.target.value)}
-                />
-                <SubmitB 
-                    type='submit'
-                    onClick = {(e) => onsubmit(e)}
-                    
-                >Shorten it!</SubmitB>
-
-            </form>
-            {errorMessage && <ErrorText> Please add a WebSite link </ErrorText>}
-            
-            
+          <form action="#">
+            <InputURL
+              placeholder="Shorten a link here..."
+              required
+              onChange={(e) => setWebURL(e.target.value)}
+            />
+            <SubmitB type="submit" onClick={(e) => onsubmit(e)}>
+              Shorten it!
+            </SubmitB>
+          </form>
+          {errorMessage && <ErrorText> Please add a WebSite link </ErrorText>}
         </FetchContainer>
-        </FetchMain>
+      </FetchMain>
 
-        { linkTrue &&
+      {linkTrue && (
         <LinkContainer>
-            {/* <OriginalLink>http://nowbuttonadded.com</OriginalLink> */}
-            <OriginalLink>{originalLink}</OriginalLink>
-            <ShortLink>{shortLink}</ShortLink>
-            {/* <ShortLink>https://shrtco.de/qK6BEQ</ShortLink> */}
+          <OriginalLink>{originalLink}</OriginalLink>
+          <ShortLink>{shortLink}</ShortLink>
 
-            <CopyToClipboard 
-            text={shortLink}
+          <CopyToClipboard 
+            text={shortLink} 
             onCopy={() => setCopySuccess(true)}
             >
-            <CopyButton
-            copySuccess = {copySuccess}
-            >{(copySuccess ? "Copied" : "Copy")}</CopyButton>
-            </CopyToClipboard>
+            <CopyButton 
+                copySuccess={copySuccess}
+                >
+              {copySuccess ? "Copied" : "Copy"}
+            </CopyButton>
+          </CopyToClipboard>
         </LinkContainer>
-        }
-        
-        </FetchSection>
-     );
-}
- 
+      )}
+    </FetchSection>
+  );
+};
+
 export default Fetcher;
