@@ -71,6 +71,13 @@ const SubmitB = styled.button `
     
 `;
 
+const ErrorText = styled.div `
+    color: #f46262;
+    margin-top: 20px;
+    font-size: 1em;
+
+`
+
 const LinkContainer = styled.div `
     display: flex;
     box-sizing: border-box;
@@ -109,7 +116,7 @@ const ShortLink = styled.span `
 
 const CopyButton = styled.button `
     color: white;
-    background-color: #2acfcf;
+    background-color:${({copySuccess}) => (copySuccess ? "#3b3054" : "#2acfcf")};
     padding: 5px 20px;
     border-radius: 5px;
     /* font-size: 1.2em; */
@@ -129,12 +136,14 @@ const Fetcher = () => {
 
 // const [shortLinks, setShortLinks] = useState({});
 
-const [webURL, setWebURL] = useState('');
+const [webURL, setWebURL] = useState(null);
 const [originalLink, setOriginalLink] = useState('');
 const [shortLink, setShortLink] = useState('');
 
 const [linkTrue, setLinkTrue] = useState(false);
-const [copySuccess, setCopySuccess] = useState('copy');
+const [copySuccess, setCopySuccess] = useState(false);
+const [errorMessage, setErrorMessage] = useState(false);
+
 
 // function copyToClipboard(e) {
 //     setCopySuccess('Copied!');
@@ -142,6 +151,13 @@ const [copySuccess, setCopySuccess] = useState('copy');
 
 const onsubmit = (e) =>{
     e.preventDefault()
+    setErrorMessage(false)
+
+    if(webURL==null){
+        setErrorMessage(true)
+    }
+    else{
+
     fetch(apiURL+webURL)
     .then(response => response.json())
     .then(json => {
@@ -151,10 +167,11 @@ const onsubmit = (e) =>{
 
         setOriginalLink(json.result.original_link);
         setShortLink(json.result.full_short_link); 
-        setLinkTrue(true);   
+        setLinkTrue(true);
+        setCopySuccess(false)   
         
     });
-       
+   }    
 }
 
 
@@ -162,7 +179,7 @@ const onsubmit = (e) =>{
         <FetchSection> 
         <FetchMain>
         <FetchContainer>
-            <form action="#" onSubmit="return false">
+            <form action="#">
                 <InputURL 
                     placeholder="Shorten a link here..."
                     required
@@ -173,8 +190,10 @@ const onsubmit = (e) =>{
                     onClick = {(e) => onsubmit(e)}
                     
                 >Shorten it!</SubmitB>
-            </form>
 
+            </form>
+            {errorMessage && <ErrorText> Please add a WebSite link </ErrorText>}
+            
             
         </FetchContainer>
         </FetchMain>
@@ -188,10 +207,11 @@ const onsubmit = (e) =>{
 
             <CopyToClipboard 
             text={shortLink}
-            onCopy={() => setCopySuccess('Copied!')}
+            onCopy={() => setCopySuccess(true)}
             >
             <CopyButton
-            >{copySuccess}</CopyButton>
+            copySuccess = {copySuccess}
+            >{(copySuccess ? "Copied" : "Copy")}</CopyButton>
             </CopyToClipboard>
         </LinkContainer>
         }
