@@ -23,6 +23,7 @@ export default function Home() {
           href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,700&display=swap"
           rel="stylesheet"
         />
+        <link rel="shortcut icon" href="/favicon.png" />
       </Head>
       <Header />
       <Hero />
