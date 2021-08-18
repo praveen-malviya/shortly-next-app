@@ -15,6 +15,7 @@ const FetchContainer = styled.div `
     background-image: url("../images/bg-shorten-desktop.svg");
     background-repeat: no-repeat;
     background-size:cover;
+    box-sizing: border-box;
     padding: 45px 0px;
     background-color: #3b3054;
     max-width: 73%;
@@ -72,7 +73,8 @@ const SubmitB = styled.button `
 
 const LinkContainer = styled.div `
     display: flex;
-    max-width: 69.5%;
+    box-sizing: border-box;
+    max-width: 73%;
     margin-left: 13vw;
     background-color: #fff;
     margin-top: 20px;

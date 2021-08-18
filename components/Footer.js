@@ -14,6 +14,7 @@ const FooterMain = styled.div `
         flex-direction: column;
         text-align: center;
         align-items: center;
+        padding: 10vw 13vw;
 
     }
 

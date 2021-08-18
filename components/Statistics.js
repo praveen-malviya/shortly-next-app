@@ -27,6 +27,8 @@ const Para = styled.p `
 
     @media (max-width: 851px) {
     max-width: 100%;
+    margin-right: 1vw;
+    margin-left: 1vw;
     }
 `;
 
