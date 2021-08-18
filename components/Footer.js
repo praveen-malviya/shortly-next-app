@@ -24,6 +24,7 @@ const Logo = styled.img `
 
     @media (max-width: 851px){
         margin-right: 0;
+        margin-bottom: 20px;
     }
 `;
 
@@ -52,13 +53,11 @@ const SocialIcon = styled.div `
     display: flex;
 `;
 
-
-
 const IconF = styled.a `
      margin-left: 1.6vw;
-    }
-    @media (max-width: 851px){
-        margin: 20px 25px 5px 0px;
+    @media (max-width: 851px) 
+    {
+    margin: 20px 25px 5px 0px;
     }
 `;
 

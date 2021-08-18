@@ -59,6 +59,7 @@ const HeroPara = styled.p `
 
 const HeroImage = styled.div `
     position: relative;
+    margin-left: 2vw;
 `;
 
 // const StyledImage = styled(Image)`

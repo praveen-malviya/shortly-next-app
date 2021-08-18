@@ -57,6 +57,11 @@ const SubmitB = styled.button `
     font-family: inherit;
     box-sizing: border-box;
 
+    cursor:pointer;
+    &:hover {
+        background-color: #9ce2e2;
+    }
+
     @media (max-width: 851px) {
     padding: 20px 0px;
      width: 80%;
