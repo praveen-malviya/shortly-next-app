@@ -24,6 +24,7 @@ export default function Home() {
           rel="stylesheet"
         />
         <link rel="shortcut icon" href="/favicon.png" />
+        <title>Shortly</title>
       </Head>
       <Header />
       <Hero />
