@@ -170,11 +170,11 @@ const Fetcher = () => {
     e.preventDefault();
     setErrorMessage(false);
     setErrorBlank(false);
-    setIsFetching(true);
 
     if (webURL == null) {
       setErrorBlank(true);
     } else {
+      setIsFetching(true);
       fetch(apiURL + webURL)
         .then((response) => response.json())
         .then((json) => {
