@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 // import { Button } from "./Button.style";
 
@@ -111,8 +111,8 @@ const ShortLink = styled.span`
 
 const CopyButton = styled.button`
   color: white;
-  background-color: ${({ copySuccess }) =>
-    copySuccess ? "#3b3054" : "#2acfcf"};
+  background-color: ${({ copySuccess, copyIndex, indexLink}) =>
+   copySuccess && copyIndex === indexLink ? "#3b3054" : "#2acfcf"};
   padding: 5px 20px;
   border-radius: 5px;
   border: none;
@@ -124,18 +124,41 @@ const CopyButton = styled.button`
   }
 `;
 
+const DeleteButton = styled.span`
+  color: darkred;
+  padding: 5px 2px;
+  margin-left:5px;
+
+  &:hover {
+  color: red;
+  }
+
+  @media (max-width: 851px) {
+    margin: 10px 48% 0 48%;
+    text-align: center;
+  }
+`;
+
 const Fetcher = () => {
   const apiURL = "https://api.shrtco.de/v2/shorten?url=";
 
-  // const [shortLinks, setShortLinks] = useState({});
-
   const [webURL, setWebURL] = useState(null);
-  const [originalLink, setOriginalLink] = useState("");
-  const [shortLink, setShortLink] = useState("");
-
+  const [linksData, setLinksData] = useState(" ");
   const [linkTrue, setLinkTrue] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+  const[copyIndex, setCopyIndex] = useState(" ");
   const [errorMessage, setErrorMessage] = useState(false);
+
+  useEffect(() => {
+    if(!localStorage.getItem("my Links Data")){
+      localStorage.setItem("my Links Data", "[{}]");
+     }else{
+      setLinkTrue(true)
+     }
+      setLinksData(JSON.parse(localStorage.getItem("my Links Data")));
+  }, [])
+
+
 
   const onsubmit = (e) => {
     e.preventDefault();
@@ -147,17 +170,33 @@ const Fetcher = () => {
       fetch(apiURL + webURL)
         .then((response) => response.json())
         .then((json) => {
-          console.log(json.result);
-          // setShortLinks(json.result);
-          // console.log(shortLinks);
+          const links = [{ogLink: json.result.original_link, srtLink: json.result.full_short_link}];
+          setLinksData([...links, ...linksData]);
 
-          setOriginalLink(json.result.original_link);
-          setShortLink(json.result.full_short_link);
           setLinkTrue(true);
-          setCopySuccess(false);
+          if(copyIndex !== null){
+          setCopyIndex(copyIndex+1);
+        }
+
         });
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem("my Links Data", JSON.stringify(linksData)); 
+  }, [linksData]);
+
+  const deletehandler = (shrtLink, deleteLink) => {
+    if(copyIndex==deleteLink){
+      setCopyIndex(null);
+    }
+    else if(copyIndex > deleteLink){
+        setCopyIndex(copyIndex-1);
+      }
+
+    const newData = linksData.filter( data => data.srtLink !== shrtLink);
+    setLinksData(newData); 
+  }
 
   return (
     <FetchSection>
@@ -178,21 +217,33 @@ const Fetcher = () => {
       </FetchMain>
 
       {linkTrue && (
-        <LinkContainer>
-          <OriginalLink>{originalLink}</OriginalLink>
-          <ShortLink>{shortLink}</ShortLink>
-
+        
+        linksData.map((link, indexLink) =>(
+          link.ogLink &&(
+        <LinkContainer key={indexLink}>
+          <OriginalLink>{link.ogLink}</OriginalLink>
+          <ShortLink>{link.srtLink}</ShortLink>
+            
           <CopyToClipboard 
-            text={shortLink} 
-            onCopy={() => setCopySuccess(true)}
+            text={link.srtLink} 
+            onCopy={() => { setCopySuccess(true); setCopyIndex(indexLink) }}
             >
             <CopyButton 
                 copySuccess={copySuccess}
+                indexLink = {indexLink}
+                copyIndex = {copyIndex}
                 >
-              {copySuccess ? "Copied" : "Copy"}
+              {copySuccess && copyIndex == indexLink ? "Copied" : "Copy"}
             </CopyButton>
           </CopyToClipboard>
+
+          <DeleteButton onClick={()=> deletehandler(link.srtLink, indexLink)}>
+            X
+          </DeleteButton>
         </LinkContainer>
+        )
+        ))
+
       )}
     </FetchSection>
   );
