@@ -126,8 +126,8 @@ const CopyButton = styled.button`
 
 const DeleteButton = styled.span`
   color: darkred;
-  padding: 5px 2px;
-  margin-left:5px;
+  /* padding: 5px 2px; */
+  margin-left:10px;
 
   &:hover {
   color: red;
@@ -147,7 +147,9 @@ const Fetcher = () => {
   const [linkTrue, setLinkTrue] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const[copyIndex, setCopyIndex] = useState(" ");
+  const [errorBlank, setErrorBlank] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     if(!localStorage.getItem("my Links Data")){
@@ -159,26 +161,32 @@ const Fetcher = () => {
   }, [])
 
 
+  function errorHandler(error) {
+    setIsFetching(false);
+    setErrorMessage(true);
+}
 
   const onsubmit = (e) => {
     e.preventDefault();
     setErrorMessage(false);
+    setErrorBlank(false);
+    setIsFetching(true);
 
     if (webURL == null) {
-      setErrorMessage(true);
+      setErrorBlank(true);
     } else {
       fetch(apiURL + webURL)
         .then((response) => response.json())
         .then((json) => {
           const links = [{ogLink: json.result.original_link, srtLink: json.result.full_short_link}];
           setLinksData([...links, ...linksData]);
-
           setLinkTrue(true);
+          setIsFetching(false);
           if(copyIndex !== null){
           setCopyIndex(copyIndex+1);
         }
-
-        });
+        })
+        .catch(errorHandler)
     }
   };
 
@@ -212,7 +220,10 @@ const Fetcher = () => {
               Shorten it!
             </SubmitB>
           </form>
-          {errorMessage && <ErrorText> Please add a WebSite link </ErrorText>}
+          {isFetching && <ErrorText> Shortening...</ErrorText>}
+          {errorBlank && <ErrorText> Please add a WebSite Link </ErrorText>}
+          {errorMessage && <ErrorText> Please Check The Website Link </ErrorText>}
+         
         </FetchContainer>
       </FetchMain>
 
