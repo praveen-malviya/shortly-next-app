@@ -134,7 +134,7 @@ const DeleteButton = styled.span`
   }
 
   @media (max-width: 851px) {
-    margin: 10px 48% 0 48%;
+    margin: 10px 49% 0 49%;
     text-align: center;
   }
 `;
